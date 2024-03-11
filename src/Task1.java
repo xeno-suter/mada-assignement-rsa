@@ -13,11 +13,13 @@ public class Task1 {
         }
         
         var n = bigIntegerUtility.calculateN(p, q);
-        var phiN = bigIntegerUtility.calculatePhi(p, q);        
+        var phiN = bigIntegerUtility.calculatePhi(p, q);
+        var e = bigIntegerUtility.findE(phiN);
 
         System.out.println("p " + p + " p.bitLength() " + p.bitLength());
         System.out.println("q " + q + " q.bitLength() " + q.bitLength());
         System.out.println("n " + n);
         System.out.println("phiN " + phiN);
+        System.out.println("e " + e);
     }
 }
