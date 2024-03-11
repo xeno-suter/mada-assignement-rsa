@@ -6,10 +6,10 @@ public class Task1 {
         BigIntegerUtility bigIntegerUtility = new BigIntegerUtility();
         
         // Generate p and q as primes
-//        var p = bigIntegerUtility.generatePrime();
-//        var q = bigIntegerUtility.generatePrime();
-        var p = BigInteger.valueOf(3);
-        var q = BigInteger.valueOf(11);
+        var p = bigIntegerUtility.generatePrime();
+        var q = bigIntegerUtility.generatePrime();
+//        var p = BigInteger.valueOf(3);
+//        var q = BigInteger.valueOf(11);
         
         // Assert that p not equal to q
         while(p.equals(q)) {
