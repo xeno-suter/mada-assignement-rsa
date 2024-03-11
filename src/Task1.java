@@ -1,18 +1,23 @@
 public class Task1 {
     
     public static void main(String[] args) {
-        PrimeUtility primeUtility = new PrimeUtility();
+        BigIntegerUtility bigIntegerUtility = new BigIntegerUtility();
         
         // Generate p and q as primes
-        var p = primeUtility.generatePrime();
-        var q = primeUtility.generatePrime();
+        var p = bigIntegerUtility.generatePrime();
+        var q = bigIntegerUtility.generatePrime();
         
         // Assert that p not equal to q
         while(p.equals(q)) {
-            q = primeUtility.generatePrime();
+            q = bigIntegerUtility.generatePrime();
         }
+        
+        var n = bigIntegerUtility.calculateN(p, q);
+        var phiN = bigIntegerUtility.calculatePhi(p, q);        
 
         System.out.println("p " + p + " p.bitLength() " + p.bitLength());
         System.out.println("q " + q + " q.bitLength() " + q.bitLength());
+        System.out.println("n " + n);
+        System.out.println("phiN " + phiN);
     }
 }
