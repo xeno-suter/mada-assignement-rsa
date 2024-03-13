@@ -4,6 +4,7 @@ public class Task1 {
     
     public static void main(String[] args) {
         BigIntegerUtility bigIntegerUtility = new BigIntegerUtility();
+        IOUtility ioUtility = new IOUtility();
         
         // Generate p and q as primes
         var p = bigIntegerUtility.generatePrime();
@@ -20,6 +21,9 @@ public class Task1 {
         var phiN = bigIntegerUtility.calculatePhi(p, q);
         var e = bigIntegerUtility.findE(phiN);
         var d = bigIntegerUtility.findD(e, phiN);
+
+        ioUtility.writePublicKey(n, e);
+        ioUtility.writePrivateKey(n, d);
 
         System.out.println("p " + p + " p.bitLength() " + p.bitLength());
         System.out.println("q " + q + " q.bitLength() " + q.bitLength());
