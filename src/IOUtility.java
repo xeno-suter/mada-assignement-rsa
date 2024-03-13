@@ -27,4 +27,13 @@ public class IOUtility {
     private String formatKeyPair(BigInteger n, BigInteger k) {
         return "(" + n.toString() + "," + k.toString() + ")";
     }
+
+    // Read the text file and return the content as a byte array (ASCII values)
+    public byte[] readTextFile(String fileName) {
+        try {
+            return Files.readAllBytes(Path.of(fileName));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
