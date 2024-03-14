@@ -84,4 +84,20 @@ public class BigIntegerUtility {
     private boolean isCoprime(BigInteger phiN, BigInteger e) {
         return ggT(e, phiN).equals(BigInteger.ONE);
     }
+
+    public BigInteger fastExponentiation(BigInteger x, BigInteger l, BigInteger m) {
+        BigInteger i = l;
+        BigInteger h = BigInteger.ONE;
+        BigInteger k = x;
+
+        while (i.compareTo(BigInteger.ZERO) > 0) {
+            if (i.mod(BigInteger.TWO).equals(BigInteger.ONE)) {
+                h = h.multiply(k).mod(m);
+            }
+            k = k.multiply(k).mod(m);
+            i = i.divide(BigInteger.TWO);
+        }
+
+        return h;
+    }
 }
