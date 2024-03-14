@@ -85,17 +85,19 @@ public class BigIntegerUtility {
         return ggT(e, phiN).equals(BigInteger.ONE);
     }
 
+    // Fast exponentiation algorithm (based on the slides from the lecture)
     public BigInteger fastExponentiation(BigInteger x, BigInteger l, BigInteger m) {
-        BigInteger i = l;
-        BigInteger h = BigInteger.ONE;
-        BigInteger k = x;
+        BigInteger i = l; // l is the exponent
+        BigInteger h = BigInteger.ONE; // h is the result
+        BigInteger k = x; // k is the base
 
-        while (i.compareTo(BigInteger.ZERO) > 0) {
+        while (i.compareTo(BigInteger.ZERO) > 0) { // While exponent is greater than 0
             if (i.mod(BigInteger.TWO).equals(BigInteger.ONE)) {
-                h = h.multiply(k).mod(m);
+                // if exponent is odd
+                h = h.multiply(k).mod(m); // h = h * k mod m
             }
-            k = k.multiply(k).mod(m);
-            i = i.divide(BigInteger.TWO);
+            k = k.multiply(k).mod(m); // square the base and take modulo m
+            i = i.divide(BigInteger.TWO); // divide the exponent by 2
         }
 
         return h;
