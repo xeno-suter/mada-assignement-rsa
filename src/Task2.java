@@ -8,6 +8,7 @@ public class Task2 {
         IOUtility ioUtility = new IOUtility();
         BigIntegerUtility bigIntegerUtility = new BigIntegerUtility();
         byte[] text = ioUtility.readTextFile(TEXT_FILE);
+        BigInteger[] pKey = ioUtility.readPublicKey();
 
         for (int i = 0; i < text.length; i++) {
             System.out.println("Text[" + i + "]: " + text[i]);
@@ -27,8 +28,8 @@ public class Task2 {
         for (int i = 0; i < text.length; i++) {
             encrypted[i] = bigIntegerUtility.fastExponentiation(
                     new BigInteger(String.valueOf(text[i])),
-                    new BigInteger("7"),
-                    new BigInteger("11")
+                    pKey[1],
+                    pKey[0]
             );
             System.out.println("Encrypted[" + i + "]: " + encrypted[i]);
         }
