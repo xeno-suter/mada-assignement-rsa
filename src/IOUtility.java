@@ -2,6 +2,8 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class IOUtility {
     public static String FILE_NAME_PUBLIC_KEY = "pk.txt";
@@ -9,78 +11,77 @@ public class IOUtility {
     public static String FILE_NAME_ENCRYPTED_MESSAGE = "cipher.txt";
     public static String FILE_NAME_DECRYPTED_MESSAGE = "text-d.txt";
 
+    private final Path publicKeyPath = Path.of(FILE_NAME_PUBLIC_KEY);
+    private final Path privateKeyPath = Path.of(FILE_NAME_PRIVATE_KEY);
+    private final Path encryptedMessagePath = Path.of(FILE_NAME_ENCRYPTED_MESSAGE);
+    private final Path decryptedMessagePath = Path.of(FILE_NAME_DECRYPTED_MESSAGE);
+
+    // Write the public key to a file
     public void writePublicKey(BigInteger n, BigInteger d) {
-        writeKey(n, d, FILE_NAME_PUBLIC_KEY);
+        writeKey(n, d, publicKeyPath);
     }
 
+    // Write the private key to a file
     public void writePrivateKey(BigInteger n, BigInteger e) {
-        writeKey(n, e, FILE_NAME_PRIVATE_KEY);
+        writeKey(n, e, privateKeyPath);
     }
 
-    private void writeKey(BigInteger n, BigInteger k, String fileName) {
-        var path = Path.of(fileName);
+    private void writeKey(BigInteger n, BigInteger k, Path path) {
         try {
-            Files.write(path, formatKeyPair(n, k).getBytes());
+            Files.writeString(path, formatKeyPair(n, k));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    // Write the encrypted message to a file
     public void writeEncryptedMessage(BigInteger[] encrypted) {
-        var path = Path.of(FILE_NAME_ENCRYPTED_MESSAGE);
         try {
-            var content = new StringBuilder();
-            for (int i = 0; i < encrypted.length; i++) {
-                content.append(encrypted[i]);
-                if (i < encrypted.length - 1) {
-                    content.append(",");
-                }
-            }
-            Files.write(path, content.toString().getBytes());
+            String content = Stream.of(encrypted)
+                    .map(BigInteger::toString)
+                    .collect(Collectors.joining(","));
+            Files.write(encryptedMessagePath, content.getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    // Write the decrypted message to a file
     public void writeDecryptedMessage(BigInteger[] decrypted) {
-        var path = Path.of(FILE_NAME_DECRYPTED_MESSAGE);
         try {
-            var content = new StringBuilder();
-            for (BigInteger bigInteger : decrypted) {
-                content.append((char) bigInteger.intValue());
-            }
-            Files.write(path, content.toString().getBytes());
+            String content = Stream.of(decrypted)
+                    .map(bigInteger -> String.valueOf((char) bigInteger.intValue()))
+                    .collect(Collectors.joining());
+            Files.write(decryptedMessagePath, content.getBytes());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private String formatKeyPair(BigInteger n, BigInteger k) {
-        return "(" + n.toString() + "," + k.toString() + ")";
-    }
-
+    // Read the public key from a file
     public BigInteger[] readPublicKey() {
         return readKey(FILE_NAME_PUBLIC_KEY);
     }
 
+    // Read the private key from a file
     public BigInteger[] readPrivateKey() {
         return readKey(FILE_NAME_PRIVATE_KEY);
     }
 
+    // Read the public or private key from a file
     private BigInteger[] readKey(String fileName) {
-        var content = readTextFile(fileName);
-        var key = new String(content).substring(1, content.length - 1).split(",");
+        byte[] content = readTextFile(fileName);
+        String[] key = new String(content).substring(1, content.length - 1).split(",");
         return new BigInteger[] { new BigInteger(key[0]), new BigInteger(key[1]) };
     }
 
+    // Read the encrypted message from a file
     public BigInteger[] readCipher() {
         var content = readTextFile(FILE_NAME_ENCRYPTED_MESSAGE);
         var cipher = new String(content).split(",");
-        var result = new BigInteger[cipher.length];
-        for (int i = 0; i < cipher.length; i++) {
-            result[i] = new BigInteger(cipher[i]);
-        }
-        return result;
+        return Stream.of(cipher)
+                .map(BigInteger::new)
+                .toArray(BigInteger[]::new);
     }
 
     // Read the text file and return the content as a byte array (ASCII values)
@@ -90,5 +91,10 @@ public class IOUtility {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    // Format the public or private key as a string
+    private String formatKeyPair(BigInteger n, BigInteger k) {
+        return "(" + n + "," + k + ")";
     }
 }
