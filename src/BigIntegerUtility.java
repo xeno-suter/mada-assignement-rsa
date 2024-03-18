@@ -39,8 +39,8 @@ public class BigIntegerUtility {
         BigInteger y0 = BigInteger.ZERO;
         BigInteger x1 = BigInteger.ZERO;
         BigInteger y1 = BigInteger.ONE;
-        BigInteger a = e;
-        BigInteger b = phiN;
+        BigInteger a = phiN;
+        BigInteger b = e;
         
         // Apply the extended Euclidean algorithm
         while (!b.equals(BigInteger.ZERO)) {
@@ -64,7 +64,7 @@ public class BigIntegerUtility {
             y1 = oldy0.subtract(q.multiply(oldy1));
         }
         
-        return x0;
+        return y0;
     }
 
     // Find the greatest common divisor
@@ -92,12 +92,12 @@ public class BigIntegerUtility {
         BigInteger k = x; // k is the base
 
         while (i.compareTo(BigInteger.ZERO) > 0) { // While exponent is greater than 0
-            if (i.mod(BigInteger.TWO).equals(BigInteger.ONE)) {
+            if (i.testBit(0)) {
                 // if exponent is odd
                 h = h.multiply(k).mod(m); // h = h * k mod m
             }
             k = k.multiply(k).mod(m); // square the base and take modulo m
-            i = i.divide(BigInteger.TWO); // divide the exponent by 2
+            i = i.shiftRight(1); // divide i by 2
         }
 
         return h;
