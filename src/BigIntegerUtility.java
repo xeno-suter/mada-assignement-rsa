@@ -63,7 +63,12 @@ public class BigIntegerUtility {
             y0 = y1;
             y1 = oldy0.subtract(q.multiply(oldy1));
         }
-        
+
+        // Ensure d is positive
+        if (y0.compareTo(BigInteger.ZERO) < 0) {
+            y0 = y0.add(phiN);
+        }
+
         return y0;
     }
 

@@ -23,7 +23,6 @@ public class Task2 {
 //        );
 //        System.out.println("x: " + x);
 
-        // todo use the public key to encrypt the message
         BigInteger[] encrypted = new BigInteger[text.length];
         for (int i = 0; i < text.length; i++) {
             encrypted[i] = bigIntegerUtility.fastExponentiation(
